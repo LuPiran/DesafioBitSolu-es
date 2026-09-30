@@ -1,0 +1,29 @@
+# Dependências e build
+node_modules/
+dist/
+dist-ssr/
+.vite/
+*.tsbuildinfo
+coverage/
+
+# Segredos. O exemplo versionado é backend/.env.example
+.env
+.env.*
+!.env.example
+
+# Sessão gravada num teste local
+cookies.txt
+
+# Notas e arquivos pessoais, fora do pacote da entrega
+/PLANEJAMENTO.md
+/PLANEJAMENTO.txt
+/*.pdf
+
+# Sistema e editor
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.idea/
+.vscode/*
+!.vscode/extensions.json
