@@ -12,5 +12,13 @@ export function BrandLogo({
   variant?: BrandVariant
   className?: string
 }) {
-  return <img src={sources[variant]} alt="Bit Soluções" className={className} />
+  return (
+    <img
+      src={sources[variant]}
+      alt="Bit Soluções"
+      width={480}
+      height={95}
+      className={className}
+    />
+  )
 }

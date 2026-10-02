@@ -44,7 +44,9 @@ export function LoginPage() {
   return (
     <div ref={root} className="grid min-h-svh md:grid-cols-2 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
       <section className="flex flex-col justify-between bg-sidebar px-5 py-6 text-sidebar-foreground sm:px-8 sm:py-8 lg:px-12 lg:py-10">
-        <BrandLogo className="login-mark h-9 w-auto" />
+        <div className="login-mark">
+          <BrandLogo className="h-9 w-auto max-w-full object-contain" />
+        </div>
         <div className="max-w-md py-6 sm:py-10 lg:py-12">
           <div className="login-rule mb-5 h-px w-14 origin-left bg-[oklch(0.78_0.09_225)] sm:mb-6" />
           <h1 className="login-copy text-2xl leading-tight font-medium tracking-tight sm:text-3xl">
