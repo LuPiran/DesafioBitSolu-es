@@ -175,9 +175,21 @@ database/supabase.sql    Script aplicado no Supabase
 database/dicionario.md   Campos, tipos e regras
 MEMORIAL_TECNICO.md      Decisões, camadas e limites
 evidencias/              Prints das telas
-docker-compose.yml       API e interface
+docker-compose.yml            API e interface na máquina local
+docker-compose.easypanel.yml  Publicação no EasyPanel
 ```
 
-## Fora desta entrega
+## Publicação no EasyPanel
 
-A publicação na VPS da Hostinger não foi feita. O Compose já separa a interface em Nginx e a API em Node, que é a base desse passo.
+O arquivo `docker-compose.easypanel.yml` sobe os mesmos dois contêineres na VPS. O painel faz o HTTPS e encaminha o domínio só para o serviço `web`, na porta 80. A API permanece na rede interna. O Nginx dessa interface continua encaminhando `/api`.
+
+No EasyPanel, crie um serviço do tipo Compose a partir do Git:
+
+- Repositório: `https://github.com/LuPiran/DesafioBitSolu-es`
+- Branch: `main`
+- Build path: `/`
+- Compose file: `docker-compose.easypanel.yml`
+
+No ambiente do serviço, preencha `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `APP_ORIGIN` e `COOKIE_SECURE=true`. Ative a criação do arquivo `.env`. `APP_ORIGIN` é o endereço público com `https`, sem barra no final. A chave de serviço e a URI do banco não entram nesse ambiente: o schema e os dados de demonstração já estão no Supabase.
+
+Em Domains, aponte o hostname para o serviço interno `web`, porta `80`, conexão HTTP. O certificado fica no painel. O registro DNS do hostname aponta para o IP da VPS. Depois de mudar o ambiente ou o domínio, use Deploy.
