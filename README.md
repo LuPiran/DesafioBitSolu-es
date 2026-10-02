@@ -2,7 +2,7 @@
 
 Sistema para colaboradores registrarem demandas internas e acompanharem o andamento até a conclusão. A entrega é da segunda etapa da seleção para Desenvolvedor de Sistemas Júnior da bit Soluções.
 
-O avaliador sobe a interface e a API com Docker. Os dados e o login ficam no Supabase, com políticas de linha no PostgreSQL. A publicação na VPS da Hostinger ficou de fora desta entrega.
+O portal está publicado em https://desafiobit.autofullall.com. Dá para entrar por esse endereço com os usuários de demonstração, sem instalar nada. Quem quiser rodar na própria máquina segue o Docker, mais abaixo. Os dados e o login ficam no Supabase, com políticas de linha no PostgreSQL.
 
 ## O que o sistema faz
 
@@ -134,7 +134,9 @@ Na pasta `backend`:
 npm test
 ```
 
-São 18 testes, sem chamar o banco. Cobrem a ordem de status, a validação de login e de solicitação, a recusa de campo extra no corpo, a sessão obrigatória, a origem rejeitada e o login com corpo inválido. O mesmo comando roda no GitHub Actions em `.github/workflows/test.yml`.
+São 18 testes, sem chamar o banco. Cobrem a ordem de status, a validação de login e de solicitação, a recusa de campo extra no corpo, a sessão obrigatória, a origem rejeitada e o login com corpo inválido.
+
+O mesmo comando roda no GitHub Actions, no arquivo `.github/workflows/test.yml`, a cada push e a cada pull request. Quando o push é na branch `main` e os testes passam, o workflow chama o gatilho do EasyPanel e publica a versão nova. A URL desse gatilho fica no segredo `EASYPANEL_DEPLOY_URL` do repositório. Ela não está no código. Um pull request só testa. Não publica.
 
 ## Rotas da API
 
@@ -179,17 +181,19 @@ docker-compose.yml            API e interface na máquina local
 docker-compose.easypanel.yml  Publicação no EasyPanel
 ```
 
-## Publicação no EasyPanel
+## Publicação
 
-O arquivo `docker-compose.easypanel.yml` sobe os mesmos dois contêineres na VPS. O painel faz o HTTPS e encaminha o domínio só para o serviço `web`, na porta 80. A API permanece na rede interna. O Nginx dessa interface continua encaminhando `/api`.
+O site no ar é https://desafiobit.autofullall.com. Ele roda numa VPS da Hostinger, com o EasyPanel na frente. Escolhi esse caminho porque a correção pode abrir o portal no navegador, sem clonar o repositório, e porque um push na `main` que passe nos testes atualiza esse endereço sozinho. O EasyPanel já estava instalado na VPS e publica o mesmo Compose da aplicação, com HTTPS. O banco continua no Supabase. A VPS não guarda uma cópia dos dados.
 
-No EasyPanel, crie um serviço do tipo Compose a partir do Git:
+O arquivo `docker-compose.easypanel.yml` sobe a interface e a API. O painel encaminha o domínio só para o serviço `web`, na porta 80. A API fica na rede interna. O Nginx da interface continua encaminhando `/api`.
+
+Para repetir essa publicação noutro servidor:
 
 - Repositório: `https://github.com/LuPiran/DesafioBitSolu-es`
 - Branch: `main`
 - Build path: `/`
 - Compose file: `docker-compose.easypanel.yml`
 
-No ambiente do serviço, preencha `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `APP_ORIGIN` e `COOKIE_SECURE=true`. Ative a criação do arquivo `.env`. `APP_ORIGIN` é o endereço público com `https`, sem barra no final. A chave de serviço e a URI do banco não entram nesse ambiente: o schema e os dados de demonstração já estão no Supabase.
+No ambiente do serviço, preencha `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `APP_ORIGIN` e `COOKIE_SECURE=true`. `APP_ORIGIN` neste ambiente é `https://desafiobit.autofullall.com`. A chave de serviço e a URI do banco não entram na VPS: o schema e os dados de demonstração já estão no Supabase.
 
-Em Domains, aponte o hostname para o serviço interno `web`, porta `80`, conexão HTTP. O certificado fica no painel. O registro DNS do hostname aponta para o IP da VPS. Depois de mudar o ambiente ou o domínio, use Deploy.
+O domínio aponta para o serviço `web`, porta `80`, com o certificado do painel. O registro DNS `desafiobit` aponta para o IP da VPS, sem proxy da Cloudflare, para o certificado nascer direto no servidor.

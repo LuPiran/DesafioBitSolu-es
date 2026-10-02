@@ -204,7 +204,7 @@ Benefício: os testes da borda HTTP sobem o mesmo `createApp()` da produção e 
 
 Alternativa: Jest é o nome mais comum e estava no planejamento como diferencial. Com ESM nativo ele pede uma camada extra de transformação. O resultado observável é o mesmo: `npm test` falha se a validação ou a sessão afrouxar.
 
-Impacto: o workflow do GitHub Actions usa Node 22 e variáveis fictícias. Ele não usa a chave real do projeto.
+Impacto: o workflow do GitHub Actions usa Node 22 e variáveis fictícias. Ele não usa a chave real do projeto. Quando esses testes passam num push da `main`, o mesmo workflow pede ao EasyPanel para publicar. O endereço desse pedido fica num segredo do GitHub, fora do repositório. Assim uma alteração que quebra a validação não chega no site que está no ar.
 
 ### react-icons
 
@@ -224,8 +224,7 @@ Alternativa: desenhar o SVG na mão, ou manter só a família Phosphor que o res
 - Edição e exclusão continuam presas ao status Aberto, também para o administrador. O administrador não reabre uma solicitação concluída.
 - Não há recuperação de senha, cadastro público nem trilha de auditoria além de `created_at` e `updated_at`.
 - Os testes não sobem o Supabase. A política de linha foi exercitada à parte, contra o projeto real, e não faz parte do `npm test` para o Actions não depender de segredo.
-- HTTPS local está desligado. `COOKIE_SECURE` só deve ficar `true` com TLS.
-- A publicação na Hostinger não foi feita.
+- HTTPS local está desligado. `COOKIE_SECURE` só deve ficar `true` com TLS. No endereço público ele está ligado.
 
 ### Melhorias futuras
 
@@ -255,4 +254,4 @@ Se a exigência fosse AWS, o equivalente direto seria:
 
 RDS, Cognito e EC2 não foram criados. O prazo e o custo de deixar um banco ligado para a correção pesaram mais do que demonstrar a conta AWS. O comportamento que essas peças dariam, login gerenciado e dado isolado por política, está no Supabase que a entrega executa.
 
-A VPS da Hostinger continuaria válida como passo seguinte de publicação: o mesmo Compose, com TLS na frente do Nginx e o `.env` só no servidor. Esse passo não faz parte do pacote enviado.
+A publicação que está no ar usa uma VPS da Hostinger com EasyPanel. O endereço é https://desafiobit.autofullall.com. Fiz assim por dois motivos práticos. Quem avalia abre o navegador e entra, sem precisar de Docker nem de conta no Supabase. E cada push na `main` que passa nos testes atualiza esse site, então a versão publicada acompanha o repositório. O EasyPanel já estava na VPS e entende o Compose que o projeto já tinha. O HTTPS termina nesse painel. A API não fica exposta: só a interface recebe o domínio e encaminha `/api`. Os dados continuam no Supabase. A VPS não virou um segundo banco.

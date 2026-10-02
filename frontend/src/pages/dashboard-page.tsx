@@ -4,10 +4,13 @@ import { MetricBand } from "@/components/dashboard/metric-band"
 import { RequestCharts } from "@/components/dashboard/request-charts"
 import { RequestTable } from "@/components/solicitacoes/request-table"
 import { Button } from "@/components/ui/button"
+import { useAuth } from "@/providers/auth-provider"
 import { useRequests } from "@/providers/requests-provider"
 
 export function DashboardPage() {
+  const { user } = useAuth()
   const { items, requesterName } = useRequests()
+  const firstName = user?.name?.split(" ")[0]
   const open = items.filter((item) => item.status === "ABERTO").length
   const progress = items.filter((item) => item.status === "EM_ATENDIMENTO").length
   const done = items.filter((item) => item.status === "CONCLUIDO").length
@@ -19,6 +22,12 @@ export function DashboardPage() {
     <div className="mx-auto max-w-6xl">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
+          <h1 className="text-lg font-medium tracking-tight text-foreground">
+            Bem-vindo de volta{firstName ? `, ${firstName}` : ""}{" "}
+            <span className="wave-hand" aria-hidden="true">
+              👋
+            </span>
+          </h1>
           <AccentRule />
           <p className="max-w-xl text-sm leading-6 text-muted-foreground">
             Volume das demandas internas neste ambiente. Os números acompanham a lista de solicitações.
