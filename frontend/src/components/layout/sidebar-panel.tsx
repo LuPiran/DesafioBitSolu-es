@@ -1,18 +1,13 @@
 import { useRef } from "react"
 import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
+import { BrandLogo } from "@/components/layout/brand-logo"
 import { SidebarNav } from "@/components/layout/sidebar-nav"
 
 export function SidebarBrand() {
   return (
-    <div className="flex items-center gap-3 px-4">
-      <span className="size-7 rounded-md bg-[oklch(0.72_0.1_220)]" />
-      <div>
-        <p className="text-sm font-medium tracking-tight text-sidebar-foreground">
-          Solicitações
-        </p>
-        <p className="text-[11px] text-sidebar-foreground/55">Portal interno</p>
-      </div>
+    <div className="px-4">
+      <BrandLogo className="h-8 w-auto" />
     </div>
   )
 }

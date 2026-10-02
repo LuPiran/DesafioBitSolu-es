@@ -4,6 +4,7 @@ import { useGSAP } from "@gsap/react"
 import { EyeClosedIcon, EyeIcon } from "@phosphor-icons/react"
 import { Navigate, useLocation, useNavigate } from "react-router-dom"
 import { notice } from "@/components/feedback/notice"
+import { BrandLogo } from "@/components/layout/brand-logo"
 import { ThemeToggle } from "@/components/layout/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -43,10 +44,7 @@ export function LoginPage() {
   return (
     <div ref={root} className="grid min-h-svh md:grid-cols-2 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
       <section className="flex flex-col justify-between bg-sidebar px-5 py-6 text-sidebar-foreground sm:px-8 sm:py-8 lg:px-12 lg:py-10">
-        <div className="login-mark flex items-center gap-3">
-          <span className="size-7 rounded-md bg-[oklch(0.72_0.1_220)]" />
-          <p className="text-sm tracking-tight">bit Soluções</p>
-        </div>
+        <BrandLogo className="login-mark h-9 w-auto" />
         <div className="max-w-md py-6 sm:py-10 lg:py-12">
           <div className="login-rule mb-5 h-px w-14 origin-left bg-[oklch(0.78_0.09_225)] sm:mb-6" />
           <h1 className="login-copy text-2xl leading-tight font-medium tracking-tight sm:text-3xl">
